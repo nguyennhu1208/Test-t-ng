@@ -45,48 +45,13 @@ public class Menu extends JFrame {
 
         JMenuItem mntmDropdown = new JMenuItem("DROPDOWN LIST");
         mnTest.add(mntmDropdown);
-        
-        JMenuItem mntmLienHe = new JMenuItem("LIÊN HỆ");
-        mnTest.add(mntmLienHe);
-        
+
         JMenu mnLopHoc = new JMenu("LỚP HỌC");
         mnLopHoc.setFont(new Font("SansSerif", Font.BOLD, 16));
         menuBar.add(mnLopHoc);
-        
+
         JMenuItem mntmThemLop = new JMenuItem("THÊM");
         mnLopHoc.add(mntmThemLop);
-        
-        JMenuItem mntmSuaLop = new JMenuItem("SỬA");
-        mnLopHoc.add(mntmSuaLop);
-        
-        JMenuItem mntmXoaLop = new JMenuItem("XÓA");
-        mnLopHoc.add(mntmXoaLop);
-        
-        JMenu mnQuiz = new JMenu("QUIZ");
-        mnQuiz.setFont(new Font("SansSerif", Font.BOLD, 16));
-        menuBar.add(mnQuiz);
-        
-        JMenuItem mntmThemQuiz = new JMenuItem("THÊM");
-        mnQuiz.add(mntmThemQuiz);
-        
-        JMenuItem mntmSuaQuiz = new JMenuItem("SỬA");
-        mnQuiz.add(mntmSuaQuiz);
-        
-        JMenuItem mntmXoaQuiz = new JMenuItem("XÓA");
-        mnQuiz.add(mntmXoaQuiz);
-        
-        JMenu mnLichThi = new JMenu("LỊCH THI");
-        mnLichThi.setFont(new Font("SansSerif", Font.BOLD, 16));
-        menuBar.add(mnLichThi);
-        
-        JMenuItem mntmThemLichThi = new JMenuItem("THÊM");
-        mnLichThi.add(mntmThemLichThi);
-        
-        JMenuItem mntmSuaLichThi = new JMenuItem("SỬA");
-        mnLichThi.add(mntmSuaLichThi);
-        
-        JMenuItem mntmXoaLichThi = new JMenuItem("XÓA");
-        mnLichThi.add(mntmXoaLichThi);
 
         // ===== LOGO MENU BAR =====
         ImageIcon menuLogo = new ImageIcon(
@@ -104,6 +69,7 @@ public class Menu extends JFrame {
                 Menu.class.getResource("/GiaoDien/LoGo/Cardmoi_PLT_Trang.png")
         );
         Image centerImg = centerLogo.getImage().getScaledInstance(300, 180, Image.SCALE_SMOOTH);
+
         desktopPane.setLayout(null);
         centerLogoLabel = new JLabel(new ImageIcon(centerImg));
 
@@ -123,7 +89,9 @@ public class Menu extends JFrame {
             }
         });
 
+        // ===== ACTION =====
         mntmDropdown.addActionListener(e -> openTestDropDown());
+        mntmThemLop.addActionListener(e -> openThemLopHoc());
     }
 
     private void resizeLogoPanel() {
@@ -134,8 +102,8 @@ public class Menu extends JFrame {
         logoPanel.repaint();
     }
 
+    // ===== OPEN DROPDOWN =====
     private void openTestDropDown() {
-
         for (JInternalFrame frame : desktopPane.getAllFrames()) {
             if (frame instanceof TestDropDownList) {
                 try {
@@ -151,13 +119,50 @@ public class Menu extends JFrame {
         TestDropDownList testDrop = new TestDropDownList();
         testDrop.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
 
-        desktopPane.add(testDrop, JLayeredPane.PALETTE_LAYER);
+        desktopPane.add(testDrop);
 
         try {
             testDrop.setMaximum(true);
         } catch (Exception ignored) {}
 
         testDrop.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
+
+    // ===== OPEN THÊM LỚP HỌC =====
+    private void openThemLopHoc() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof ThemLopHoc) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        ThemLopHoc themLop = new ThemLopHoc();
+        themLop.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(themLop);
+
+        themLop.setVisible(true);
+
+        try {
+            themLop.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        themLop.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 if (desktopPane.getAllFrames().length == 0) {
