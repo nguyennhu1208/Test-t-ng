@@ -52,6 +52,13 @@ public class Menu extends JFrame {
 
         JMenuItem mntmThemLop = new JMenuItem("THÊM");
         mnLopHoc.add(mntmThemLop);
+        
+        JMenu mnQuiz = new JMenu("Quiz");
+        mnQuiz.setFont(new Font("SansSerif", Font.BOLD, 16));
+        menuBar.add(mnQuiz);
+        
+        JMenuItem mntmThemQuiz = new JMenuItem("THÊM");
+        mnQuiz.add(mntmThemQuiz);
 
         // ===== LOGO MENU BAR =====
         ImageIcon menuLogo = new ImageIcon(
@@ -92,6 +99,7 @@ public class Menu extends JFrame {
         // ===== ACTION =====
         mntmDropdown.addActionListener(e -> openTestDropDown());
         mntmThemLop.addActionListener(e -> openThemLopHoc());
+        mntmThemQuiz.addActionListener(e -> openThemQuiz());
     }
 
     private void resizeLogoPanel() {
@@ -163,6 +171,42 @@ public class Menu extends JFrame {
         } catch (Exception ignored) {}
 
         themLop.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
+    // OPEN THEM QUIZ
+    private void openThemQuiz() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof ThemQuiz) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        ThemQuiz themQuiz = new ThemQuiz();
+        themQuiz.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(themQuiz);
+
+        themQuiz.setVisible(true);
+
+        try {
+        	themQuiz.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        themQuiz.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 if (desktopPane.getAllFrames().length == 0) {
