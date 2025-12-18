@@ -129,7 +129,7 @@ public class ThemQuiz extends JInternalFrame {
             txtTenBo.setText(ExcelQuizReader.quizInfo.getOrDefault("TEN_BO", ""));
             txtMoTa.setText(ExcelQuizReader.quizInfo.getOrDefault("MO_TA", ""));
             txtThoiGian.setText(ExcelQuizReader.quizInfo.getOrDefault("THOI_GIAN", ""));
-            txtSoCau.setText(String.valueOf(ExcelQuizReader.questions.size()));
+            txtSoCau.setText(ExcelQuizReader.quizInfo.getOrDefault("SO_CAU", ""));
         }
     }
 
@@ -168,9 +168,13 @@ public class ThemQuiz extends JInternalFrame {
         ExcelQuizReader.quizInfo.put("SO_CAU", txtSoCau.getText().trim());
 
         // RUN
+    
+
+
         SeleniumCreateQuiz.run(
-                ExcelQuizReader.quizInfo,
-                ExcelQuizReader.questions
+            ExcelQuizReader.quizInfo,
+            ExcelQuizReader.questions
         );
+
     }
 }
