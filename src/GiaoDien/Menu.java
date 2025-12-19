@@ -53,7 +53,10 @@ public class Menu extends JFrame {
         JMenuItem mntmThemLop = new JMenuItem("THÊM");
         mnLopHoc.add(mntmThemLop);
         
-        JMenu mnQuiz = new JMenu("Quiz");
+        JMenuItem mntmXoaLop = new JMenuItem("XÓA");
+        mnLopHoc.add(mntmXoaLop);
+        
+        JMenu mnQuiz = new JMenu("QUIZ");
         mnQuiz.setFont(new Font("SansSerif", Font.BOLD, 16));
         menuBar.add(mnQuiz);
         
@@ -99,6 +102,7 @@ public class Menu extends JFrame {
         // ===== ACTION =====
         mntmDropdown.addActionListener(e -> openTestDropDown());
         mntmThemLop.addActionListener(e -> openThemLopHoc());
+        mntmXoaLop.addActionListener(e -> openXoaLopHoc());
         mntmThemQuiz.addActionListener(e -> openThemQuiz());
     }
 
@@ -171,6 +175,42 @@ public class Menu extends JFrame {
         } catch (Exception ignored) {}
 
         themLop.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
+ // ===== OPEN THÊM LỚP HỌC =====
+    private void openXoaLopHoc() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof XoaLopHoc) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        XoaLopHoc xoaLop = new XoaLopHoc();
+        xoaLop.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(xoaLop);
+
+        xoaLop.setVisible(true);
+
+        try {
+        	xoaLop.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        xoaLop.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 if (desktopPane.getAllFrames().length == 0) {
