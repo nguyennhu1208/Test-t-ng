@@ -92,7 +92,7 @@ public class ThemLopHoc extends JInternalFrame {
             @Override
             protected Void doInBackground() throws Exception {
 
-                LopHocService.runTest(url, excel, new LopHocService.LopHocCallback() {
+                ThemLopHocService.runTest(url, excel, new ThemLopHocService.LopHocCallback() {
 
                     @Override
                     public void onRowResult(int stt, String ma, String ten, String result) {

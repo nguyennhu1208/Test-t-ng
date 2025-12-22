@@ -53,12 +53,18 @@ public class Menu extends JFrame {
         JMenuItem mntmThemLop = new JMenuItem("THÊM");
         mnLopHoc.add(mntmThemLop);
         
-        JMenu mnQuiz = new JMenu("Quiz");
+        JMenuItem mntmXoaLop = new JMenuItem("XÓA");
+        mnLopHoc.add(mntmXoaLop);
+        
+        JMenu mnQuiz = new JMenu("QUIZ");
         mnQuiz.setFont(new Font("SansSerif", Font.BOLD, 16));
         menuBar.add(mnQuiz);
         
         JMenuItem mntmThemQuiz = new JMenuItem("THÊM");
         mnQuiz.add(mntmThemQuiz);
+        
+        JMenuItem mntmXoaQuiz = new JMenuItem("XÓA");
+        mnQuiz.add(mntmXoaQuiz);
 
         // ===== LOGO MENU BAR =====
         ImageIcon menuLogo = new ImageIcon(
@@ -99,7 +105,9 @@ public class Menu extends JFrame {
         // ===== ACTION =====
         mntmDropdown.addActionListener(e -> openTestDropDown());
         mntmThemLop.addActionListener(e -> openThemLopHoc());
+        mntmXoaLop.addActionListener(e -> openXoaLopHoc());
         mntmThemQuiz.addActionListener(e -> openThemQuiz());
+        mntmXoaQuiz.addActionListener(e -> openXoaQuiz());
     }
 
     private void resizeLogoPanel() {
@@ -180,6 +188,42 @@ public class Menu extends JFrame {
             }
         });
     }
+ // ===== OPEN XÓA LỚP HỌC =====
+    private void openXoaLopHoc() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof XoaLopHoc) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        XoaLopHoc xoaLop = new XoaLopHoc();
+        xoaLop.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(xoaLop);
+
+        xoaLop.setVisible(true);
+
+        try {
+        	xoaLop.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        xoaLop.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
     // OPEN THEM QUIZ
     private void openThemQuiz() {
 
@@ -207,6 +251,42 @@ public class Menu extends JFrame {
         } catch (Exception ignored) {}
 
         themQuiz.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
+ // ===== OPEN XÓA QUIZ =====
+    private void openXoaQuiz() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof XoaQuiz) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        XoaQuiz xoaQuiz = new XoaQuiz();
+        xoaQuiz.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(xoaQuiz);
+
+        xoaQuiz.setVisible(true);
+
+        try {
+        	xoaQuiz.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        xoaQuiz.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 if (desktopPane.getAllFrames().length == 0) {
