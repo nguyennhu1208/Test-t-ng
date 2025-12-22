@@ -62,6 +62,9 @@ public class Menu extends JFrame {
         
         JMenuItem mntmThemQuiz = new JMenuItem("THÊM");
         mnQuiz.add(mntmThemQuiz);
+        
+        JMenuItem mntmXoaQuiz = new JMenuItem("XÓA");
+        mnQuiz.add(mntmXoaQuiz);
 
         // ===== LOGO MENU BAR =====
         ImageIcon menuLogo = new ImageIcon(
@@ -104,6 +107,7 @@ public class Menu extends JFrame {
         mntmThemLop.addActionListener(e -> openThemLopHoc());
         mntmXoaLop.addActionListener(e -> openXoaLopHoc());
         mntmThemQuiz.addActionListener(e -> openThemQuiz());
+        mntmXoaQuiz.addActionListener(e -> openXoaQuiz());
     }
 
     private void resizeLogoPanel() {
@@ -184,7 +188,7 @@ public class Menu extends JFrame {
             }
         });
     }
- // ===== OPEN THÊM LỚP HỌC =====
+ // ===== OPEN XÓA LỚP HỌC =====
     private void openXoaLopHoc() {
 
         for (JInternalFrame frame : desktopPane.getAllFrames()) {
@@ -247,6 +251,42 @@ public class Menu extends JFrame {
         } catch (Exception ignored) {}
 
         themQuiz.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                if (desktopPane.getAllFrames().length == 0) {
+                    logoPanel.setVisible(true);
+                    resizeLogoPanel();
+                }
+            }
+        });
+    }
+ // ===== OPEN XÓA QUIZ =====
+    private void openXoaQuiz() {
+
+        for (JInternalFrame frame : desktopPane.getAllFrames()) {
+            if (frame instanceof XoaQuiz) {
+                try {
+                    frame.setSelected(true);
+                    frame.toFront();
+                } catch (Exception ignored) {}
+                return;
+            }
+        }
+
+        logoPanel.setVisible(false);
+
+        XoaQuiz xoaQuiz = new XoaQuiz();
+        xoaQuiz.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+
+        desktopPane.add(xoaQuiz);
+
+        xoaQuiz.setVisible(true);
+
+        try {
+        	xoaQuiz.setMaximum(true);
+        } catch (Exception ignored) {}
+
+        xoaQuiz.addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
                 if (desktopPane.getAllFrames().length == 0) {
